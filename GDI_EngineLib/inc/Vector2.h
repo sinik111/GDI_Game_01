@@ -28,10 +28,15 @@ public:
 
 public:
 	float SquareLength() const;
+
 	float Length() const;
+
 	Vector2 Normalized() const;
+
 	void Normalize();
+
 	std::string ToString() const;
+
 	bool IsZero() const;
 
 	float AngleToUp() const;
@@ -40,6 +45,7 @@ public:
 	static float Dot(const Vector2& v1, const Vector2& v2);
 
 	static float Distance(const Vector2& v1, const Vector2& v2);
+
 	static float SquareDistance(const Vector2& v1, const Vector2& v2);
 
 	static Vector2 Direction(const Vector2& dst, const Vector2& src);

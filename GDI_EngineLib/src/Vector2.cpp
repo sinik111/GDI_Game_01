@@ -1,7 +1,9 @@
+#include "pch.h"
 #include "Vector2.h"
 
 #include <cmath>
 #include <string>
+
 #include "MyMath.h"
 
 const Vector2 Vector2::Zero{ 0.0f, 0.0f };

@@ -21,7 +21,7 @@ void Debug::CreateConsole()
         AllocConsole();
         FILE* fp;
         freopen_s(&fp, "CONOUT$", "w", stdout);
-        SetConsoleTitle(L"Debug Console");
+        SetConsoleTitleW(L"Debug Console");
         s_IsConsoleOn = true;
 
         Log("Console created");

@@ -145,6 +145,7 @@
     <ClInclude Include="inc\DebugUtil.h" />
     <ClInclude Include="inc\framework.h" />
     <ClInclude Include="inc\Input.h" />
+    <ClInclude Include="inc\MyMath.h" />
     <ClInclude Include="inc\MyTime.h" />
     <ClInclude Include="inc\pch.h" />
     <ClInclude Include="inc\ResultCode.h" />

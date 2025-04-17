@@ -1,43 +1,45 @@
 #include "pch.h"
 #include "Input.h"
 
-namespace
-{
+HWND Input::s_hWnd = nullptr;
 
+void Input::Initialize(HWND hWnd)
+{
+    s_hWnd = hWnd;
 }
 
 void Input::Update()
 {
-    previous_key_state = current_key_state;
+    s_PreviousKeyState = s_CurrentKeyState;
 
     for (int i = 0; i < 256; ++i)
     {
-        current_key_state[i] = (GetAsyncKeyState(i) & 0x8000) != 0;
+        s_CurrentKeyState[i] = (GetAsyncKeyState(i) & 0x8000) != 0;
     }
 }
 
 bool Input::IsKeyDown(int vkey)
 {
-    return current_key_state[vkey];
+    return s_CurrentKeyState[vkey];
 }
 
 bool Input::IsKeyPressed(int vkey)
 {
-    return !previous_key_state[vkey] && current_key_state[vkey];
+    return !s_PreviousKeyState[vkey] && s_CurrentKeyState[vkey];
 }
 
 bool Input::IsKeyReleased(int vkey)
 {
-    return previous_key_state[vkey] && !current_key_state[vkey];
+    return s_PreviousKeyState[vkey] && !s_CurrentKeyState[vkey];
 }
 
-POINT Input::GetCursorPosition(HWND hwnd)
+POINT Input::GetCursorPosition()
 {
     POINT point;
 
     GetCursorPos(&point);
 
-    ScreenToClient(hwnd, &point);
+    ScreenToClient(s_hWnd, &point);
 
     return point;
 }

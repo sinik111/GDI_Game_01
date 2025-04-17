@@ -3,8 +3,7 @@
 #include "DebugUtil.h"
 
 WinApp::WinApp()
-	: m_hWnd(nullptr), m_hInstance(nullptr), m_Width(0), m_Height(0),
-	m_ClassName(L""), m_WindowName(L""), m_ModulePath(L""), m_WorkingPath(L"")
+	: m_hWnd(nullptr), m_hInstance(nullptr), m_Width(0), m_Height(0)
 {
 	
 }
