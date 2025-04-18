@@ -142,26 +142,49 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="inc\DebugUtil.h" />
+    <ClInclude Include="inc\Animation.h" />
+    <ClInclude Include="inc\AnimationController.h" />
+    <ClInclude Include="inc\Collider.h" />
+    <ClInclude Include="inc\CollisionManager.h" />
+    <ClInclude Include="inc\Debug.h" />
+    <ClInclude Include="inc\DebugUtility.h" />
+    <ClInclude Include="inc\FileLoader.h" />
     <ClInclude Include="inc\framework.h" />
+    <ClInclude Include="inc\GDIRenderer.h" />
     <ClInclude Include="inc\Input.h" />
     <ClInclude Include="inc\MyMath.h" />
     <ClInclude Include="inc\MyTime.h" />
+    <ClInclude Include="inc\Object.h" />
     <ClInclude Include="inc\pch.h" />
+    <ClInclude Include="inc\Resources.h" />
     <ClInclude Include="inc\ResultCode.h" />
+    <ClInclude Include="inc\Scene.h" />
+    <ClInclude Include="inc\SceneManager.h" />
+    <ClInclude Include="inc\Singleton.h" />
     <ClInclude Include="inc\Vector2.h" />
     <ClInclude Include="inc\WinApp.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\DebugUtil.cpp" />
+    <ClCompile Include="src\Animation.cpp" />
+    <ClCompile Include="src\AnimationController.cpp" />
+    <ClCompile Include="src\Collider.cpp" />
+    <ClCompile Include="src\CollisionManager.cpp" />
+    <ClCompile Include="src\Debug.cpp" />
+    <ClCompile Include="src\DebugUtility.cpp" />
+    <ClCompile Include="src\FileLoader.cpp" />
+    <ClCompile Include="src\GDIRenderer.cpp" />
     <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\MyTime.cpp" />
+    <ClCompile Include="src\Object.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Resources.cpp" />
+    <ClCompile Include="src\Scene.cpp" />
+    <ClCompile Include="src\SceneManager.cpp" />
     <ClCompile Include="src\Vector2.cpp" />
     <ClCompile Include="src\WinApp.cpp" />
   </ItemGroup>

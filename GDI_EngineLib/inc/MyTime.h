@@ -2,30 +2,31 @@
 
 #include <chrono>
 
+#include "Singleton.h"
+
 using Clock = std::chrono::high_resolution_clock;
 using TimePoint = std::chrono::time_point<Clock>;
 using Duration = std::chrono::duration<float>;
 
-class MyTime
+class MyTime :
+    public Singleton<MyTime>
 {
+    friend class Singleton<MyTime>;
 private:
-    static TimePoint s_PreviousTime;
-    static TimePoint s_CurrentTime;
+    TimePoint m_PreviousTime;
+    TimePoint m_CurrentTime;
 
-    static float s_DeltaTime;
+    float m_DeltaTime;
 
 private:
-    MyTime() = delete;
-    ~MyTime() = delete;
-    MyTime(const MyTime&) = delete;
-    MyTime& operator=(const MyTime&) = delete;
-    MyTime(MyTime&&) = delete;
-    MyTime& operator=(MyTime&&) = delete;
+    MyTime();
+    ~MyTime() = default;
 
 public:
-    static void Update();
-    static float GetDeltaTime();
-    static TimePoint GetTimestamp();
-    static TimePoint GetAccumulatedTime(const TimePoint& timePoint, int second);
-    static float GetElapsedTime(const TimePoint& timePoint);
+    void Update();
+
+    float DeltaTime();
+    TimePoint GetTimestamp();
+    TimePoint GetAccumulatedTime(const TimePoint& timePoint, int second);
+    float GetElapsedTime(const TimePoint& timePoint);
 };

@@ -70,6 +70,12 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -129,21 +135,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="inc\DemoGame.h" />
+    <ClInclude Include="inc\Box.h" />
+    <ClInclude Include="inc\Camera.h" />
+    <ClInclude Include="inc\DemoGameApp.h" />
     <ClInclude Include="inc\framework.h" />
-    <ClInclude Include="inc\Resource.h" />
+    <ClInclude Include="inc\Player.h" />
+    <ClInclude Include="inc\PlayScene.h" />
+    <ClInclude Include="inc\resource.h" />
+    <ClInclude Include="inc\ResultScene.h" />
     <ClInclude Include="inc\targetver.h" />
+    <ClInclude Include="inc\TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\DemoGame.cpp" />
+    <ClCompile Include="src\Box.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\DemoGameApp.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\TitleScene.cpp" />
+    <ClCompile Include="src\PlayScene.cpp" />
+    <ClCompile Include="src\ResultScene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\DemoGame.ico" />
-    <Image Include="res\small.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="res\DemoGame.rc" />
+    <ProjectReference Include="..\GDI_EngineLib\GDI_EngineLib.vcxproj">
+      <Project>{a61b0c34-a5d8-4ec4-ae38-76fa70718b04}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

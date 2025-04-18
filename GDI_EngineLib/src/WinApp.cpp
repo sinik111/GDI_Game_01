@@ -1,9 +1,16 @@
 #include "pch.h"
 #include "WinApp.h"
-#include "DebugUtil.h"
+
+#include "Debug.h"
+#include "MyTime.h"
+#include "Input.h"
+#include "GDIRenderer.h"
+#include "SceneManager.h"
 
 WinApp::WinApp()
-	: m_hWnd(nullptr), m_hInstance(nullptr), m_Width(0), m_Height(0)
+	: m_hWnd(nullptr), m_hInstance(nullptr), m_Width(0), m_Height(0),
+	m_ClassStyle(0), m_hIcon(nullptr), m_hCursor(nullptr), m_hIconSmall(nullptr),
+	m_WindowStyle(0), m_X(0), m_Y(0), m_IsRunning(false)
 {
 	
 }
@@ -50,6 +57,8 @@ void WinApp::MessageProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 ResultCode WinApp::Initialize()
 {
+	Debug::CreateConsole();
+
 	wchar_t szPath[MAX_PATH] = {};
 
 	GetModuleFileNameW(NULL, szPath, MAX_PATH);
@@ -63,28 +72,36 @@ ResultCode WinApp::Initialize()
 
 	m_hInstance = GetModuleHandleW(NULL);
 
-	WNDCLASSEXW wc = {};
+	WNDCLASSEX wc = {};
+
 	wc.cbSize = sizeof(WNDCLASSEXW);
-	wc.style = CS_HREDRAW | CS_VREDRAW;
+	wc.style = m_ClassStyle;
 	wc.lpfnWndProc = WindowProc;
 	wc.hInstance = m_hInstance;
 	wc.lpszClassName = m_ClassName.c_str();
-	wc.hCursor = LoadCursorW(NULL, IDC_ARROW);
-	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+	wc.hCursor = m_hCursor;
+	wc.hIcon = m_hIcon;
+	wc.hCursor = m_hCursor;
+	wc.hIconSm = m_hIconSmall;
 
-	RegisterClassExW(&wc);
+	if (0 == RegisterClassExW(&wc))
+	{
+		Debug::Log("RegisterClassExW failed - WinApp::Initialize");
+
+		return ResultCode::FAIL;
+	}
 
 	// 원하는 크기가 조정되어 리턴
 	SIZE clientSize = { m_Width, m_Height };
 	RECT clientRect = { 0, 0, clientSize.cx, clientSize.cy };
-	AdjustWindowRect(&clientRect, WS_OVERLAPPEDWINDOW, FALSE);
+	AdjustWindowRect(&clientRect, m_WindowStyle, FALSE);
 
-	m_hWnd = CreateWindowEx(
+	m_hWnd = CreateWindowExW(
 		0,
 		m_ClassName.c_str(),
 		m_WindowName.c_str(),
-		WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, CW_USEDEFAULT,
+		m_WindowStyle,
+		m_X, m_Y,
 		clientRect.right - clientRect.left, // 너비
 		clientRect.bottom - clientRect.top, // 높이
 		NULL,
@@ -92,14 +109,29 @@ ResultCode WinApp::Initialize()
 		m_hInstance,
 		this // 인스턴스 주소를 NCREATESTRUCT의 lpCreateParams에 저장
 	);
+
+	if (m_hWnd == nullptr)
+	{
+		Debug::Log("CreateWindowExW failed - WinApp::Initialize");
+
+		return ResultCode::FAIL;
+	}
+
 	ShowWindow(m_hWnd, SW_SHOW);
 	UpdateWindow(m_hWnd);
+
+	Input::Get().SetWindow(m_hWnd);
+	MyTime::Get();
+	GDIRenderer::Get().Initialize(m_hWnd, m_Width, m_Height);
 
 	return ResultCode::OK;
 }
 
 void WinApp::Shutdown()
 {
+	SceneManager::Get().Shutdown();
+	GDIRenderer::Get().Shutdown();
+	Debug::ReleaseConsole();
 }
 
 void WinApp::Run()
@@ -121,13 +153,29 @@ void WinApp::Run()
 
 		Update();
 		Render();
+
+		Debug::UpdateFPS(true);
 	}
+}
+
+bool WinApp::IsRunning()
+{
+	return m_IsRunning;
 }
 
 void WinApp::Update()
 {
+	MyTime::Get().Update();
+	Input::Get().Update();
+
+	SceneManager::Get().Update();
 }
 
 void WinApp::Render()
 {
+	GDIRenderer::Get().BeginDraw();
+
+	SceneManager::Get().Render();
+
+	GDIRenderer::Get().EndDraw();
 }

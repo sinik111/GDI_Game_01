@@ -3,35 +3,35 @@
 #include <windows.h>
 #include <bitset>
 
-class Input
+#include "Singleton.h"
+
+class Input :
+	public Singleton<Input>
 {
+	friend class Singleton<Input>;
 private:
-	static HWND s_hWnd;
-	static std::bitset<256> s_CurrentKeyState;
-	static std::bitset<256> s_PreviousKeyState;
+	HWND m_hWnd;
+	std::bitset<256> m_CurrentKeyState;
+	std::bitset<256> m_PreviousKeyState;
 
 private:
-	Input() = delete;
-	~Input() = delete;
-	Input(const Input&) = delete;
-	Input& operator=(const Input&) = delete;
-	Input(Input&&) = delete;
-	Input& operator=(Input&&) = delete;
+	Input();
+	~Input() = default;
 
 public:
-	static void Initialize(HWND hWnd);
+	void SetWindow(HWND hWnd);
 
 	// 매 루프마다 호출 필요
-	static void Update();
+	void Update();
 
 	// 키가 눌려진 상태인지 확인
-	static bool IsKeyDown(int vkey);
+	bool IsKeyDown(int vkey);
 
 	// 이번 루프에 키가 눌려졌는지 확인
-	static bool IsKeyPressed(int vkey);
+	bool IsKeyPressed(int vkey);
 
 	// 이번 루프에 키가 놓아졌는지 확인
-	static bool IsKeyReleased(int vkey);
+	bool IsKeyReleased(int vkey);
 
-	static POINT GetCursorPosition();
+	POINT GetCursorPosition();
 };

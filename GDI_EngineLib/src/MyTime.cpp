@@ -1,24 +1,25 @@
 #include "pch.h"
 #include "MyTime.h"
 
-TimePoint MyTime::s_PreviousTime = Clock::now();
-TimePoint MyTime::s_CurrentTime = Clock::now();
+MyTime::MyTime()
+    : m_PreviousTime(Clock::now()), m_CurrentTime(Clock::now()), m_DeltaTime(0.0f)
+{
 
-float MyTime::s_DeltaTime = 0.0f;
+}
 
 void MyTime::Update()
 {
-    s_CurrentTime = Clock::now();
+    m_CurrentTime = Clock::now();
 
-    std::chrono::duration<float> duration(s_CurrentTime - s_PreviousTime);
-    s_DeltaTime = duration.count();
+    std::chrono::duration<float> duration(m_CurrentTime - m_PreviousTime);
+    m_DeltaTime = duration.count();
 
-    s_PreviousTime = s_CurrentTime;
+    m_PreviousTime = m_CurrentTime;
 }
 
-float MyTime::GetDeltaTime()
+float MyTime::DeltaTime()
 {
-    return s_DeltaTime;
+    return m_DeltaTime;
 }
 
 TimePoint MyTime::GetTimestamp()
