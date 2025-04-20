@@ -47,6 +47,8 @@ void AnimationController::PlayAnimation(const std::wstring& name)
 
 	Debug::Log(L"Play animation. name: " + name + L" AnimationController::PlayAnimation");
 
+	m_pCurrentAnimation = m_Animations[name];
+
 	m_pCurrentAnimation->Play();
 }
 

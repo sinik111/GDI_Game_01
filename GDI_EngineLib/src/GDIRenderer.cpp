@@ -106,7 +106,7 @@ void GDIRenderer::Shutdown()
 
 void GDIRenderer::BeginDraw() const
 {
-	PatBlt(m_BackBufferDC, 0, 0, m_Width, m_Height, BLACKNESS);
+	PatBlt(m_BackBufferDC, 0, 0, m_Width, m_Height, WHITENESS);
 }
 
 void GDIRenderer::DrawImage(Gdiplus::Bitmap* image, const Gdiplus::Rect& dst_rect, const Gdiplus::Rect& src_rect) const

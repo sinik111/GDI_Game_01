@@ -44,7 +44,7 @@ ResultCode DemoGameApp::Initialize()
 
 	SceneManager::Get().CreateScene<TitleScene>(L"Title");
 	SceneManager::Get().CreateScene<PlayScene>(L"Play");
-	SceneManager::Get().CreateScene<ResultScene>(L"Play");
+	SceneManager::Get().CreateScene<ResultScene>(L"Result");
 
 	SceneManager::Get().ChangeScene(L"Title");
 

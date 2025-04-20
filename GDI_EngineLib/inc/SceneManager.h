@@ -46,9 +46,9 @@ public:
 			return nullptr;
 		}
 
-		Scene* pScene = new T();
+		T* pScene = new T();
 		m_Scenes.emplace(name, pScene);
 
-		return (T*)pScene;
+		return pScene;
 	}
 };
