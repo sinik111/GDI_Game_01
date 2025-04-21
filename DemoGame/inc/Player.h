@@ -27,6 +27,8 @@ private:
 
 	float m_Speed;
 
+	int m_Score;
+
 public:
 	Player();
 	~Player() = default;
@@ -38,4 +40,7 @@ public:
 public:
 	void Update() override;
 	void Render() override;
+
+public:
+	void Collide(Object& object, const std::wstring& groupName) override;
 };

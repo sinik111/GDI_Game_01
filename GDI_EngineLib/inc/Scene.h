@@ -6,7 +6,7 @@ class Object;
 
 class Scene
 {
-private:
+protected:
 	std::vector<Object*> m_Objects;
 
 public:

@@ -24,5 +24,7 @@ public:
 	virtual void Render() = 0;
 
 public:
+	const Collider& GetCollider();
 	bool IsDestroyed();
+	virtual void Collide(Object& object, const std::wstring& groupName);
 };

@@ -10,9 +10,33 @@ void CollisionManager::ClearCandidates()
 	m_CandidateGroups.clear();
 }
 
-void CollisionManager::ResisterGameObject(const std::wstring& group, Object* object)
+void CollisionManager::ResisterGameObject(const std::wstring& groupName, Object* object)
 {
-	m_CandidateGroups[group].push_back(object);
+	m_CandidateGroups[groupName].push_back(object);
+}
+
+void CollisionManager::CheckCollision(const std::wstring& group1Name, const std::wstring& group2Name)
+{
+	std::vector<Object*>& group1 = m_CandidateGroups[group1Name];
+	std::vector<Object*>& group2 = m_CandidateGroups[group2Name];
+
+	for (auto object1 : group1)
+	{
+		for (auto object2 : group2)
+		{
+			switch (object1->GetCollider().type)
+			{
+			case ColliderType::AABB:
+				if (IsAABBCollide(object1->GetCollider(), object2->GetCollider()))
+				{
+					object1->Collide(*object2, group2Name);
+					object2->Collide(*object1, group1Name);
+				}
+				break;
+			}
+			
+		}
+	}
 }
 
 //void CollisionManager::AABBCollisionPlayerAndBoxes()
@@ -39,14 +63,14 @@ void CollisionManager::ResisterGameObject(const std::wstring& group, Object* obj
 //	}
 //}
 
-bool CollisionManager::CheckUIRectContainPosition(const UIRect& ui_rect, const Vector2& position)
+bool CollisionManager::CheckUIRectContainPosition(const Collider& uiRect, const Vector2& position)
 {
-	return !(ui_rect.position.x > position.x || ui_rect.position.y > position.y ||
-		ui_rect.position.x + ui_rect.width < position.x ||
-		ui_rect.position.y + ui_rect.height < position.y);
+	return !(uiRect.position.x > position.x || uiRect.position.y > position.y ||
+		uiRect.position.x + uiRect.width < position.x ||
+		uiRect.position.y + uiRect.height < position.y);
 }
 
-bool CollisionManager::IsAABBCollide(const AABB& aabb1, const AABB& aabb2)
+bool CollisionManager::IsAABBCollide(const Collider& aabb1, const Collider& aabb2)
 {
 	return !(aabb1.position.x > aabb2.position.x + aabb2.width ||
 		aabb1.position.x + aabb1.width < aabb2.position.x ||
@@ -54,8 +78,8 @@ bool CollisionManager::IsAABBCollide(const AABB& aabb1, const AABB& aabb2)
 		aabb1.position.y + aabb1.height < aabb2.position.y);
 }
 
-bool CollisionManager::IsCircleCollide(const Circle& circle1, const Circle& circle2)
+bool CollisionManager::IsCircleCollide(const Collider& circle1, const Collider& circle2)
 {
 	return Vector2::SquareDistance(circle1.position, circle2.position) <=
-		(circle1.radius + circle2.radius) * (circle1.radius + circle2.radius);
+		(circle1.width + circle2.width) * (circle1.width + circle2.width);
 }

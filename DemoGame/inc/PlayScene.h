@@ -6,6 +6,9 @@
 class PlayScene
 	: public Scene
 {
+private:
+	float m_Timer;
+
 public:
 	PlayScene() = default;
 	~PlayScene() = default;

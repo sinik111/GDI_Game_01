@@ -5,9 +5,6 @@
 class Object;
 class Collider;
 class Vector2;
-struct AABB;
-struct Circle;
-struct UIRect;
 
 class CollisionManager
 	: public Singleton<CollisionManager>
@@ -23,15 +20,16 @@ private:
 
 public:
 	void ClearCandidates();
-	void ResisterGameObject(const std::wstring& group, Object* object);
+	void ResisterGameObject(const std::wstring& groupName, Object* object);
 
 public:
+	void CheckCollision(const std::wstring& group1Name, const std::wstring& group2Name);
 	//void AABBCollisionPlayerAndBoxes();
 
 public:
-	static bool CheckUIRectContainPosition(const UIRect& ui_rect, const Vector2& position);
+	static bool CheckUIRectContainPosition(const Collider& uiCollider, const Vector2& position);
 
 private:
-	bool IsAABBCollide(const AABB& aabb1, const AABB& aabb2);
-	bool IsCircleCollide(const Circle& circle1, const Circle& circle2);
+	bool IsAABBCollide(const Collider& aabb1, const Collider& aabb2);
+	bool IsCircleCollide(const Collider& circle1, const Collider& circle2);
 };

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "Object.h"
 #include "Vector2.h"
 
@@ -11,28 +13,22 @@ namespace Gdiplus
 enum class ResultCode;
 class Camera;
 
-class Box :
+class BackgroundTest :
 	public Object
 {
 private:
-	Vector2 m_Direction;
 	Gdiplus::Bitmap* m_Image;
-	float m_Speed;
+	int m_SceneNumber;
 
 public:
-	Box(const Vector2& position, Gdiplus::Bitmap* image);
-	~Box() = default;
+	BackgroundTest(Gdiplus::Bitmap* image, int scene);
+	~BackgroundTest() = default;
 
-public:
+public: // 초기화, 정리
 	ResultCode Initialize() override;
 	void Destroy() override;
 
-public:
+public: // 루프
 	void Update() override;
 	void Render() override;
-
-public:
-	void Collide(Object& object, const std::wstring& groupName) override;
 };
-
-

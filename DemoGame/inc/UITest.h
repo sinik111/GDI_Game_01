@@ -1,38 +1,35 @@
 #pragma once
 
+#include <string>
+
 #include "Object.h"
 #include "Vector2.h"
+
+#include "GDIRenderer.h"
 
 namespace Gdiplus
 {
 	class Bitmap;
 }
 
-enum class ResultCode;
-class Camera;
-
-class Box :
+class UITest :
 	public Object
 {
 private:
-	Vector2 m_Direction;
+	Vector2 m_Position;
 	Gdiplus::Bitmap* m_Image;
-	float m_Speed;
+	std::wstring m_Text;
+	Gdiplus::Color m_Color;
 
 public:
-	Box(const Vector2& position, Gdiplus::Bitmap* image);
-	~Box() = default;
+	UITest() = default;
+	~UITest() = default;
 
-public:
+public: // 초기화, 정리
 	ResultCode Initialize() override;
 	void Destroy() override;
 
-public:
+public: // 루프
 	void Update() override;
 	void Render() override;
-
-public:
-	void Collide(Object& object, const std::wstring& groupName) override;
 };
-
-

@@ -9,13 +9,19 @@
 #include "CollisionManager.h"
 #include "Debug.h"
 
+Box::Box(const Vector2& position, Gdiplus::Bitmap* image)
+    : m_Image(image), m_Speed(0.0f)
+{
+    m_Position = position;
+}
+
 ResultCode Box::Initialize()
 {
-    m_speed = 100.0f;
+    m_Speed = 100.0f;
 
     m_Direction = Vector2((rand() % 200 - 100) / 0.01f, (rand() % 200 - 100) / 0.01f ).Normalized();
 
-    m_Collider.SetColliderInfo(m_Position, Vector2::Zero, 0.0f, 16.0f, 16.0f);
+    m_Collider.SetColliderInfo(ColliderType::AABB, m_Position, Vector2::Zero, 16.0f, 16.0f);
 
 	return ResultCode::OK;
 }
@@ -29,7 +35,7 @@ void Box::Destroy()
 
 void Box::Update()
 {
-    m_Position += m_Direction * m_speed * MyTime::Get().DeltaTime();
+    m_Position += m_Direction * m_Speed * MyTime::Get().DeltaTime();
 
     float screenWidth = (float)GDIRenderer::Get().GetWidth();
     float screenHeight = (float)GDIRenderer::Get().GetHeight();
@@ -50,6 +56,8 @@ void Box::Update()
         m_Direction.y *= -1; // 방향 변경
     }
 
+    m_Collider.UpdateCollider(m_Position);
+
     if (!m_IsDestroyed)
     {
         CollisionManager::Get().ResisterGameObject(L"box", this);
@@ -63,13 +71,24 @@ void Box::Render()
 
     src_rect.X = 0;
     src_rect.Y = 0;
-    src_rect.Width = m_image->GetWidth();
-    src_rect.Height = m_image->GetHeight();
+    src_rect.Width = m_Image->GetWidth();
+    src_rect.Height = m_Image->GetHeight();
 
     dst_rect.X = (int)(m_Position.x - src_rect.Width / 2);
     dst_rect.Y = (int)(m_Position.y - src_rect.Height / 2);
-    dst_rect.Width = m_image->GetWidth();
-    dst_rect.Height = m_image->GetHeight();
+    dst_rect.Width = m_Image->GetWidth();
+    dst_rect.Height = m_Image->GetHeight();
 
-    GDIRenderer::Get().DrawImage(m_image, dst_rect, src_rect);
+    GDIRenderer::Get().DrawImage(m_Image, dst_rect, src_rect);
+
+    GDIRenderer::Get().DrawRectangle(Gdiplus::Color(0, 0, 0), Gdiplus::Rect((int)m_Collider.position.x, (int)m_Collider.position.y,
+        (int)m_Collider.width, (int)m_Collider.height));
+}
+
+void Box::Collide(Object& object, const std::wstring& groupName)
+{
+    if (groupName == L"player")
+    {
+        m_IsDestroyed = true;
+    }
 }

@@ -135,26 +135,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="inc\BackgroundTest.h" />
     <ClInclude Include="inc\Box.h" />
     <ClInclude Include="inc\Camera.h" />
     <ClInclude Include="inc\DemoGameApp.h" />
     <ClInclude Include="inc\framework.h" />
+    <ClInclude Include="inc\GameData.h" />
     <ClInclude Include="inc\Player.h" />
     <ClInclude Include="inc\PlayScene.h" />
     <ClInclude Include="inc\resource.h" />
     <ClInclude Include="inc\ResultScene.h" />
     <ClInclude Include="inc\targetver.h" />
     <ClInclude Include="inc\TitleScene.h" />
+    <ClInclude Include="inc\UITest.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\BackgroundTest.cpp" />
     <ClCompile Include="src\Box.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\DemoGameApp.cpp" />
+    <ClCompile Include="src\GameData.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\TitleScene.cpp" />
     <ClCompile Include="src\PlayScene.cpp" />
     <ClCompile Include="src\ResultScene.cpp" />
+    <ClCompile Include="src\UITest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GDI_EngineLib\GDI_EngineLib.vcxproj">

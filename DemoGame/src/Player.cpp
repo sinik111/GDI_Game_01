@@ -10,9 +10,11 @@
 #include "MyTime.h"
 #include "Camera.h"
 #include "CollisionManager.h"
+#include "GameData.h"
 
 Player::Player()
-	: m_Speed(0.0f), m_current_state(PlayerState::None), m_next_state(PlayerState::None)
+	: m_Speed(0.0f), m_current_state(PlayerState::None), m_next_state(PlayerState::None),
+	m_Score(0)
 {
 }
 
@@ -38,7 +40,7 @@ ResultCode Player::Initialize()
 
 	m_Speed = 200.0f;
 
-	m_Collider.SetColliderInfo(m_Position, Vector2(0.0f, 27.0f), 0.0f, 35.0f, 75.0f);
+	m_Collider.SetColliderInfo(ColliderType::AABB, m_Position, Vector2(0.0f, 27.0f), 35.0f, 75.0f);
 
 	return ResultCode::OK;
 }
@@ -145,7 +147,12 @@ void Player::Update()
 			m_Position += direction.Normalized() * m_Speed * MyTime::Get().DeltaTime();
 	}
 
-	CollisionManager::Get().ResisterGameObject(L"player", this);
+	m_Collider.UpdateCollider(m_Position);
+
+	if (!m_IsDestroyed)
+	{
+		CollisionManager::Get().ResisterGameObject(L"player", this);
+	}
 }
 
 void Player::Render()
@@ -162,4 +169,16 @@ void Player::Render()
 	dst_rect.Y = (int)(m_Position.y - src_rect.Height / 2);
 
 	GDIRenderer::Get().DrawImage(image, dst_rect, src_rect);
+
+	GDIRenderer::Get().DrawRectangle(Gdiplus::Color(0, 0, 0), Gdiplus::Rect((int)m_Collider.position.x, (int)m_Collider.position.y,
+		(int)m_Collider.width, (int)m_Collider.height));
+}
+
+void Player::Collide(Object& object, const std::wstring& groupName)
+{
+	if (groupName == L"box")
+	{
+		++m_Score;
+		GameData::Get().SetScore(m_Score);
+	}
 }
